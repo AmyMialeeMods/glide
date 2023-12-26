@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "glide",
+  "version": "${version}",
+  "name": "glide",
+  "description": "",
+  "authors": [
+    "AmyMialee",
+    "SillviaTV"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/glide/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "xyz.amymialee.glide.GlideClient"
+    ],
+    "main": [
+      "xyz.amymialee.glide.Glide"
+    ],
+    "fabric-datagen": [
+      "xyz.amymialee.glide.GlideDatagen"
+    ],
+    "cardinal-components-entity": [
+      "xyz.amymialee.glide.Glide"
+    ]
+  },
+  "mixins": [
+    "glide.mixins.json"
+  ],
+  "custom": {
+    "cardinal-components": [
+      "glide:gliding"
+    ]
+  },
+  "depends": {
+    "fabric": "*"
+  }
+}
