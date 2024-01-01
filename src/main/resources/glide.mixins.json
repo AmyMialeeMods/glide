@@ -4,8 +4,13 @@
   "package": "xyz.amymialee.glide.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "LivingEntityMixin"
   ],
   "client": [
+    "BipedEntityModelMixin",
+    "ClientPlayerEntityMixin",
+    "InGameHudMixin",
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

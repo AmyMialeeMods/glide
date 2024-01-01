@@ -1,6 +1,8 @@
 plugins {
     id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 base {
@@ -52,6 +54,41 @@ publishing {
     }
 }
 
+curseforge {
+    apiKey = project.hasProperty('curseforge_api_key') ? project.property('curseforge_api_key') : ''
+    project {
+        id = project.curseforge_project_id
+        changelogType = 'markdown'
+        changelog = file("CHANGELOG.md")
+        addGameVersion project.minecraft_version
+        addGameVersion "Fabric"
+        addGameVersion "Quilt"
+        mainArtifact(remapJar) {
+            displayName = "v${project.version.toString().split("\\+")[0]} for Fabric/Quilt MC $project.minecraft_version"
+            releaseType = "release"
+            relations {
+                requiredDependency "fabric-api"
+            }
+        }
+    }
+}
+
+modrinth {
+    token = project.hasProperty("modrinth_api_key") ? project.property("modrinth_api_key") : ""
+    projectId = project.modrinth_project_id
+    versionNumber = project.version
+    versionName = "v${project.version.toString().split("\\+")[0]} for Fabric/Quilt MC $project.minecraft_version"
+    changelog = file("CHANGELOG.md").text
+    versionType = "release"
+    uploadFile = remapJar
+    gameVersions = [project.minecraft_version]
+    loaders = ["fabric", "quilt"]
+    dependencies {
+        // required/optional/incompatible/embedded + project/version
+        required.project "fabric-api"
+    }
+}
+
 loom {
     accessWidenerPath = file("src/main/resources/glide.accesswidener")
     runs {
@@ -97,7 +134,7 @@ java {
 }
 
 jar {
-    from("LICENSE.md") {
+    from("LICENSE.md.md") {
         rename { "${it}_${base.archivesName.get()}"}
     }
 }
