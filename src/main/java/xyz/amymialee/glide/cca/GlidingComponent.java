@@ -21,8 +21,8 @@ import xyz.amymialee.glide.Glide;
 import xyz.amymialee.glide.util.BlockCastFinder;
 
 public class GlidingComponent implements AutoSyncedComponent, CommonTickingComponent {
-    private static final int MAX_GUST_COOLDOWN = 12 * 20;
-    private static final int MAX_CYCLONE_COOLDOWN = 6 * 20;
+    private static final int MAX_GUST_COOLDOWN = 10 * 20;
+    private static final int MAX_CYCLONE_COOLDOWN = 16 * 20;
     private final PlayerEntity player;
     private int abilityCooldown = 0;
     private int gustTime = 0;
@@ -111,16 +111,16 @@ public class GlidingComponent implements AutoSyncedComponent, CommonTickingCompo
             }
             if (this.gustTime > 0) {
                 this.gustTime--;
-                this.player.addVelocity(0, 0.35, 0);
+                var look = this.player.getRotationVector();
+                look = new Vec3d(look.x, 0, look.z).normalize();
+                this.player.addVelocity(look.x * 0.5f, 0, look.z * 0.5f);
                 if (this.gustTime == 0) {
                     Glide.GLIDING_COMPONENT.sync(this.player);
                 }
             }
             if (this.cycloneTime > 0) {
                 this.cycloneTime--;
-                var look = this.player.getRotationVector();
-                look = new Vec3d(look.x, 0, look.z).normalize();
-                this.player.addVelocity(look.x * 0.5f, 0, look.z * 0.5f);
+                this.player.addVelocity(0, 0.35, 0);
                 if (this.cycloneTime == 0) {
                     Glide.GLIDING_COMPONENT.sync(this.player);
                 }
